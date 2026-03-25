@@ -1,5 +1,5 @@
-from construct import *
-from construct.lib import *
+from malstruct import *
+from malstruct.lib import *
 
 
 class UTIndex(Construct):

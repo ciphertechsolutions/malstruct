@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-import construct
-x,y,z = construct.version
+import malstruct
+x,y,z = malstruct.version
 z += 1
 
 import arrow
@@ -13,8 +13,8 @@ version_string = "{x}.{y}.{z}"
 release_date = "{date.year}.{date.month:02}.{date.day:02}"
 """.lstrip()
 
-with open("construct/version.py","wt") as f:
+with open("malstruct/version.py", "wt") as f:
     f.write(content)
 
 import os
-os.system(f"git commit -a -m 'version uped to {x}.{y}.{z}'")
+os.system(f"git commit -a -m 'version upped to {x}.{y}.{z}'")

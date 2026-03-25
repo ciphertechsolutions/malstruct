@@ -1,9 +1,9 @@
 ===================
-Debugging Construct
+Debugging Malstruct
 ===================
 
 
-Programming data structures in Construct is much easier than writing the equivalent procedural code, both in terms of ease-of-use and correctness. However, sometimes things don't behave the way you expect them to. Yep, a bug.
+Programming data structures in Malstruct is much easier than writing the equivalent procedural code, both in terms of ease-of-use and correctness. However, sometimes things don't behave the way you expect them to. Yep, a bug.
 
 Most end-user bugs originate from handling the context wrong. Sometimes you forget what nesting level you are at, or you move things around without taking into account the nesting, thus breaking context-based expressions. The two utilities described below should help you out.
 
@@ -24,9 +24,9 @@ The ``Probe`` simply dumps information to the screen. It will help you inspect t
     --------------------------------------------------
     Probe, path is (parsing), into is None
     Stream peek: (hexlified) b'010203'...
-    Container: 
+    Container:
         count = 5
-        items = ListContainer: 
+        items = ListContainer:
             97
             98
             99
@@ -66,13 +66,13 @@ When an exception occurs while parsing, you can go up (using ``u``) to the level
     --------------------------------------------------
     Debugging exception of <Array: None>
     path is (building)
-      File "/media/arkadiusz/MAIN/GitHub/construct/construct/debug.py", line 192, in _build
+      File "/media/ciphertechsolutions/MAIN/GitHub/malstruct/malstruct/debug.py", line 192, in _build
         return self.subcon._build(obj, stream, context, path)
-      File "/media/arkadiusz/MAIN/GitHub/construct/construct/core.py", line 2149, in _build
+      File "/media/ciphertechsolutions/MAIN/GitHub/malstruct/malstruct/core.py", line 2149, in _build
         raise RangeError("expected %d elements, found %d" % (count, len(obj)))
-    construct.core.RangeError: expected 3 elements, found 0
+    malstruct.core.RangeError: expected 3 elements, found 0
 
-    > /media/arkadiusz/MAIN/GitHub/construct/construct/core.py(2149)_build()
+    > /media/ciphertechsolutions/MAIN/GitHub/malstruct/malstruct/core.py(2149)_build()
     -> raise RangeError("expected %d elements, found %d" % (count, len(obj)))
     (Pdb) q
     --------------------------------------------------

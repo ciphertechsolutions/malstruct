@@ -30,7 +30,7 @@ A constant value that is required to exist in the data and match a given value. 
 >>> d.build(None)
 b'IHDR'
 >>> d.parse(b"JPEG")
-construct.core.ConstError: expected b'IHDR' but parsed b'JPEG'
+malstruct.core.ConstError: expected b'IHDR' but parsed b'JPEG'
 
 By default, ``Const`` uses a ``Bytes`` field with size matching the value. However, other fields can also be used:
 
@@ -139,8 +139,8 @@ FormatFieldError: Error in path (building) -> count
 struct '>B' error during building, given value 9090
 
 >>> d = Struct(
-...     "integrity" / Check(this.count == len_(this.items)), 
-...     "count" / Byte, 
+...     "integrity" / Check(this.count == len_(this.items)),
+...     "count" / Byte,
 ...     "items" / Byte[this.count],
 ... )
 >>> d.build(dict(count=9090, items=[]))

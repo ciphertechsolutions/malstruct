@@ -1,6 +1,6 @@
 """
 fat.py; ad-hoc fat16 reader
-    by Bram Westerbaan <bram@westerbaan.name> 
+    by Bram Westerbaan <bram@westerbaan.name>
 
 references:
     http://en.wikipedia.org/wiki/File_Allocation_Table
@@ -15,7 +15,7 @@ example:
 
 import numbers
 from io import BytesIO, BufferedReader
-from construct import *
+from malstruct import *
 
 Fat16Header = Struct(
     "jumpInstruction" / Bytes(3),
@@ -26,7 +26,7 @@ Fat16Header = Struct(
     "fatCount" / Byte,
     "rootdirEntryCount" / Int16ul,
     "sectorCount_small" / Int16ul,
-    "mediaId" / Byte, 
+    "mediaId" / Byte,
     "sectorsPerFat" / Int16ul,
     "sectorsPerTrack" / Int16ul,
     "sideCount" / Int16ul,
@@ -109,11 +109,11 @@ class File(object):
 
     def toStream(self, stream):
         self.fs.fileToStream(self.dirEntry.firstCluster, stream)
-    
+
     @property
     def name(self):
         return "%s.%s" % (self.dirEntry.name.rstrip(), self.dirEntry.extension)
-    
+
     def __str__(self):
         return "&%s %s" % (self.dirEntry.firstCluster, self.name)
 
@@ -126,7 +126,7 @@ class Directory(File):
             self.children = File.fromDirEntries(\
                 self.fs.getDirEntries(\
                 self.dirEntry.firstCluster), fs)
-    
+
     @property
     def name(self):
         return self.dirEntry.name.rstrip()
@@ -138,7 +138,7 @@ class Directory(File):
         for file in self.children:
             if file.name == name:
                 return file
-    
+
     def __iter__(self):
         return iter(self.children)
 
@@ -147,7 +147,7 @@ class FatFs(Directory):
     def __init__(self, stream):
         self.stream = stream
         self.pdr = PreDataRegion.parse_stream(stream)
-        super(FatFs, self).__init__(dirEntry = None, 
+        super(FatFs, self).__init__(dirEntry = None,
                 fs = self, children = File.fromDirEntries(
                         self.pdr.rootdirs, self))
 
@@ -198,7 +198,7 @@ class FatFs(Directory):
         res = ress.pop()
         print ("assuming %s" % res)
         return res
-    
+
     def getDirEntries(self, clidx):
         try:
             for de in self._getDirEntries(clidx):

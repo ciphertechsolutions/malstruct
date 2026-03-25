@@ -5,7 +5,7 @@ Used on Unix systems as a replacement of the older a.out format.
 Big-endian support kindly submitted by Craig McQueen (mcqueen-c#edsrd1!yzk!co!jp).
 """
 
-from construct import *
+from malstruct import *
 
 
 def elf32_body(ElfInt16, ElfInt32):
@@ -28,12 +28,12 @@ def elf32_body(ElfInt16, ElfInt32):
         "flags" / ElfInt32,
         "align" / ElfInt32,
     )
-    
+
     elf32_section_header = Struct(
         "name_offset" / ElfInt32,
-        "name" / Pointer(this._.strtab_data_offset + this.name_offset, 
+        "name" / Pointer(this._.strtab_data_offset + this.name_offset,
             CString("utf8")),
-        "type" / Enum(ElfInt32, 
+        "type" / Enum(ElfInt32,
             NULL = 0,
             PROGBITS = 1,
             SYMTAB = 2,
@@ -55,10 +55,10 @@ def elf32_body(ElfInt16, ElfInt32):
         "info" / ElfInt32,
         "align" / ElfInt32,
         "entry_size" / ElfInt32,
-        "data" / Pointer(this.offset, 
+        "data" / Pointer(this.offset,
             Bytes(this.size)),
     )
-    
+
     return Struct(
         "type" / Enum(ElfInt16,
             NONE = 0,
@@ -88,16 +88,16 @@ def elf32_body(ElfInt16, ElfInt32):
         "sh_entry_size"        / ElfInt16,
         "sh_count"             / ElfInt16,
         "strtab_section_index" / ElfInt16,
-        
+
         # calculate the string table data offset (pointer arithmetics)
         # ugh... anyway, we need it in order to read the section names, later on
-        "strtab_data_offset" / Pointer(this.sh_offset + this.strtab_section_index * this.sh_entry_size + 16, 
+        "strtab_data_offset" / Pointer(this.sh_offset + this.strtab_section_index * this.sh_entry_size + 16,
             ElfInt32),
-        
-        "program_table" / Pointer(this.ph_offset, 
+
+        "program_table" / Pointer(this.ph_offset,
             elf32_program_header[this.ph_count]),
-        
-        "sections" / Pointer(this.sh_offset, 
+
+        "sections" / Pointer(this.sh_offset,
             elf32_section_header[this.sh_count]),
     )
 
@@ -112,7 +112,7 @@ elf32_file = Struct(
         "encoding" / Enum(Byte,
             NONE = 0,
             LSB = 1,
-            MSB = 2,            
+            MSB = 2,
         ),
         "version" / Byte,
         Padding(9),

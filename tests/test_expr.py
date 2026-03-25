@@ -1,6 +1,6 @@
 from tests.declarativeunittest import *
-from construct import *
-from construct.lib import *
+from malstruct import *
+from malstruct.lib import *
 
 
 def test_path():

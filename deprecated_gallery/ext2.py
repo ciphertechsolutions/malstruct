@@ -2,7 +2,7 @@
 Extension 2 (ext2) used in Linux systems
 """
 
-from construct import *
+from malstruct import *
 
 Char = SLInt8
 UChar = ULInt8
@@ -24,7 +24,7 @@ superblock = Struct(
     "free_blocks_count" / ULong,
     "free_inodes_count" / ULong,
     "first_data_block" / ULong,
-    "log_block_size" / Enum(ULong, 
+    "log_block_size" / Enum(ULong,
         OneKB = 0,
         TwoKB = 1,
         FourKB = 2,
@@ -121,7 +121,7 @@ EXT2_ACL_IDX_INO = 3
 EXT2_ACL_DATA_INO = 4
 EXT2_BOOT_LOADER_INO = 5
 EXT2_UNDEL_DIR_INO = 6
-EXT2_FIRST_INO = 11 
+EXT2_FIRST_INO = 11
 
 directory_record = Struct(
     "inode" / ULong,

@@ -1,5 +1,5 @@
 from tests.declarativeunittest import *
-from construct.lib.binary import *
+from malstruct.lib.binary import *
 
 
 def test_integer2bits():

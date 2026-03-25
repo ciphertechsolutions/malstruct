@@ -2,7 +2,7 @@
 Windows/OS2 Bitmap (BMP) this could have been a perfect show-case file format, but they had to make it ugly (all sorts of alignments)
 """
 
-from construct import *
+from malstruct import *
 
 #===============================================================================
 # pixels: uncompressed
@@ -72,7 +72,7 @@ bitmap_file = Struct(
 
     # palette (24 bit has no palette)
     # NOTE: was called "rgb" inside of it
-    "palette" / Array(lambda ctx: 2**ctx.bpp if ctx.bpp <= 8 else 0, 
+    "palette" / Array(lambda ctx: 2**ctx.bpp if ctx.bpp <= 8 else 0,
         Padded(4, Byte[3])),
 
     "pixels" / Pointer(this.data_offset,

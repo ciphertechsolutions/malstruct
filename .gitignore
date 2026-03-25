@@ -12,3 +12,11 @@ build/
 .tox
 .pytest_cache
 example_*
+
+# Virtual Environments
+.venv*/
+venv*/
+
+# IDE Settings
+.idea/
+.vscode/

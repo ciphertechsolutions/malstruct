@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from tests.declarativeunittest import *
-from construct import *
-from construct.lib import *
+from malstruct import *
+from malstruct.lib import *
 from tests.test_compiler import example, exampledata
 
 
@@ -266,23 +266,23 @@ def test_class_flagsenum_build(benchmark):
 
 def test_class_mapping_parse(benchmark):
     x = "object"
-    d = Mapping(Byte, {x:0})
+    d = Mapping(Byte, {0:x})
     benchmark(d.parse, bytes(1))
 
 def test_class_mapping_parse_compiled(benchmark):
     x = "object"
-    d = Mapping(Byte, {x:0})
+    d = Mapping(Byte, {0:x})
     d = d.compile()
     benchmark(d.parse, bytes(1))
 
 def test_class_mapping_build(benchmark):
     x = "object"
-    d = Mapping(Byte, {x:0})
+    d = Mapping(Byte, {0:x})
     benchmark(d.build, x)
 
 def test_class_mapping_build_compiled(benchmark):
     x = "object"
-    d = Mapping(Byte, {x:0})
+    d = Mapping(Byte, {0:x})
     d = d.compile()
     benchmark(d.build, x)
 

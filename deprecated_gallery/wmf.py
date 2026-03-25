@@ -2,7 +2,7 @@
 Windows Meta File
 """
 
-from construct import *
+from malstruct import *
 
 
 wmf_record = Struct(
@@ -113,7 +113,7 @@ wmf_file = Struct(
     "placeable_header" / Optional(wmf_placeable_header),
 
     # --- header ---
-    "type" / Enum(Int16ul, 
+    "type" / Enum(Int16ul,
         InMemory = 0,
         File = 1,
     ),

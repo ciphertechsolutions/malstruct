@@ -1,12 +1,12 @@
-===============================
+=================================
 Core API: Adapters and Validators
-===============================
+=================================
 
-.. autofunction:: construct.ExprAdapter
-.. autofunction:: construct.ExprSymmetricAdapter
-.. autofunction:: construct.ExprValidator
-.. autofunction:: construct.OneOf
-.. autofunction:: construct.NoneOf
-.. autofunction:: construct.Filter
-.. autofunction:: construct.Slicing
-.. autofunction:: construct.Indexing
+.. autofunction:: malstruct.ExprAdapter
+.. autofunction:: malstruct.ExprSymmetricAdapter
+.. autofunction:: malstruct.ExprValidator
+.. autofunction:: malstruct.OneOf
+.. autofunction:: malstruct.NoneOf
+.. autofunction:: malstruct.Filter
+.. autofunction:: malstruct.Slicing
+.. autofunction:: malstruct.Indexing

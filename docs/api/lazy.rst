@@ -2,7 +2,7 @@
 Core API: Lazy equivalents
 ===============================
 
-.. autofunction:: construct.Lazy
-.. autofunction:: construct.LazyStruct
-.. autofunction:: construct.LazyArray
-.. autofunction:: construct.LazyBound
+.. autofunction:: malstruct.Lazy
+.. autofunction:: malstruct.LazyStruct
+.. autofunction:: malstruct.LazyArray
+.. autofunction:: malstruct.LazyBound

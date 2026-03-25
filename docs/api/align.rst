@@ -2,7 +2,7 @@
 Core API: Alignment and Padding
 ===============================
 
-.. autofunction:: construct.Padding
-.. autofunction:: construct.Padded
-.. autofunction:: construct.Aligned
-.. autofunction:: construct.AlignedStruct
+.. autofunction:: malstruct.Padding
+.. autofunction:: malstruct.Padded
+.. autofunction:: malstruct.Aligned
+.. autofunction:: malstruct.AlignedStruct

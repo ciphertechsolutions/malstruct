@@ -1,11 +1,14 @@
-from construct import *
-from construct.lib import *
+from malstruct import *
+from malstruct.lib import *
 import sys, traceback, pdb, inspect
 
 
 class Probe(Construct):
     r"""
     Probe that dumps the context, and some stream content (peeks into it) to the screen to aid the debugging process. It can optionally limit itself to a single context entry, instead of printing entire context.
+        - The lookahead stream is enabled by default
+        - Use hexdump instead of hexlify to display lookahead stream
+        - Allows for setting a name
 
     :param into: optional, None by default, or context lambda
     :param lookahead: optional, integer, number of bytes to dump from the stream
@@ -22,9 +25,9 @@ class Probe(Construct):
         --------------------------------------------------
         Probe, path is (parsing), into is None
         Stream peek: (hexlified) b'010203'...
-        Container: 
+        Container:
             count = 5
-            items = ListContainer: 
+            items = ListContainer:
                 97
                 98
                 99
@@ -48,7 +51,8 @@ class Probe(Construct):
 
     """
 
-    def __init__(self, into=None, lookahead=None):
+    def __init__(self, into=None, lookahead=128, name=None):
+        self.print_name = name
         super(Probe, self).__init__()
         self.flagbuildnone = True
         self.into = into
@@ -72,14 +76,17 @@ class Probe(Construct):
 
     def printout(self, stream, context, path):
         print("--------------------------------------------------")
-        print("Probe, path is %s, into is %r" % (path, self.into, ))
+        print(f"Probe {self.print_name or ''}")
+        print(f"Path: {path}")
+        if self.into:
+            print(f"Into: {self.into!r}")
 
         if self.lookahead and stream is not None:
             fallback = stream.tell()
-            datafollows = stream.read(self.lookahead)
+            stream_bytes = stream.read(self.lookahead)
             stream.seek(fallback)
-            if datafollows:
-                print("Stream peek: (hexlified) %s..." % (hexlify(datafollows), ))
+            if stream_bytes:
+                print("Stream peek:\n{}".format(hexdump(stream_bytes, 32)))
             else:
                 print("Stream peek: EOF reached")
 
@@ -89,7 +96,7 @@ class Probe(Construct):
                     subcontext = self.into(context)
                     print(subcontext)
                 except Exception:
-                    print("Failed to compute %r on the context %r" % (self.into, context, ))
+                    print("Failed to compute {!r} on the context {!r}".format(self.into, context))
             else:
                 print(context)
         print("--------------------------------------------------")
@@ -98,23 +105,23 @@ class Probe(Construct):
 class Debugger(Subconstruct):
     r"""
     PDB-based debugger. When an exception occurs in the subcon, a debugger will appear and allow you to debug the error (and even fix it on-the-fly).
-    
+
     :param subcon: Construct instance, subcon to debug
-    
+
     Example::
-    
+
         >>> Debugger(Byte[3]).build([])
 
         --------------------------------------------------
         Debugging exception of <Array: None>
         path is (building)
-          File "/media/arkadiusz/MAIN/GitHub/construct/construct/debug.py", line 192, in _build
+          File "/media/ciphertechsolutions/MAIN/GitHub/ciphertechsolutions/malstruct/debug.py", line 192, in _build
             return self.subcon._build(obj, stream, context, path)
-          File "/media/arkadiusz/MAIN/GitHub/construct/construct/core.py", line 2149, in _build
+          File "/media/ciphertechsolutions/MAIN/GitHub/ciphertechsolutions/malstruct/core.py", line 2149, in _build
             raise RangeError("expected %d elements, found %d" % (count, len(obj)))
-        construct.core.RangeError: expected 3 elements, found 0
+        malstruct.core.RangeError: expected 3 elements, found 0
 
-        > /media/arkadiusz/MAIN/GitHub/construct/construct/core.py(2149)_build()
+        > /media/ciphertechsolutions/MAIN/GitHub/ciphertechsolutions/malstruct/core.py(2149)_build()
         -> raise RangeError("expected %d elements, found %d" % (count, len(obj)))
         (Pdb) q
         --------------------------------------------------

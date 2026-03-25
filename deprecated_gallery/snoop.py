@@ -4,7 +4,7 @@ what : snoop v2 capture file.
  who : jesse@housejunkie.ca
 """
 
-from construct import *
+from malstruct import *
 import time
 
 

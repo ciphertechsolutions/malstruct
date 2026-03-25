@@ -12,7 +12,7 @@ Implementation of the following grammar for the GIF89a file format
 <Special-Purpose Block> ::=    Application Extension  | Comment Extension
 """
 
-from construct import *
+from malstruct import *
 
 
 data_sub_block = PascalString(Int8ul, "utf8")

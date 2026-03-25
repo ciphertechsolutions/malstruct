@@ -1,5 +1,5 @@
-from construct import *
-from construct.lib import *
+from malstruct import *
+from malstruct.lib import *
 import binascii
 
 
@@ -94,7 +94,7 @@ def bytes2integer(data, signed=False):
 
 BYTES2BITS_CACHE = {i:integer2bits(i,8) for i in range(256)}
 def bytes2bits(data):
-    r""" 
+    r"""
     Converts between bit-string and byte-string representations, both as bytes type.
 
     Example:
@@ -107,7 +107,7 @@ def bytes2bits(data):
 
 BITS2BYTES_CACHE = {bytes2bits(int2byte(i)):i for i in range(256)}
 def bits2bytes(data):
-    r""" 
+    r"""
     Converts between bit-string and byte-string representations, both as bytes type. Its length must be multiple of 8.
 
     Example:

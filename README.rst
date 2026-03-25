@@ -1,7 +1,7 @@
-Construct 2.10
+Malstruct 2.10
 ===================
 
-Construct is a powerful **declarative** and **symmetrical** parser and builder for binary data.
+Malstruct is a powerful **declarative** and **symmetrical** parser and builder for binary data that was forked from `construct <https://github.com/construct/construct>`_ as of release 2.10.70.
 
 Instead of writing *imperative code* to parse a piece of data, you declaratively define a *data structure* that describes your data. As this data structure is not code, you can use it in one direction to *parse* data into Pythonic objects, and in the other direction, to *build* objects into binary data.
 

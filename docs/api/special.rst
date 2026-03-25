@@ -2,4 +2,4 @@
 Core API: Special
 ===============================
 
-.. autofunction:: construct.Renamed
+.. autofunction:: malstruct.Renamed

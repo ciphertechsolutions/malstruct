@@ -2,10 +2,10 @@
 Core API: Abstract classes
 ===============================
 
-.. autoclass:: construct.Construct
-.. autoclass:: construct.Subconstruct
-.. autoclass:: construct.Adapter
-.. autoclass:: construct.SymmetricAdapter
-.. autoclass:: construct.Validator
-.. autoclass:: construct.Tunnel
-.. autoclass:: construct.Compiled
+.. autoclass:: malstruct.Construct
+.. autoclass:: malstruct.Subconstruct
+.. autoclass:: malstruct.Adapter
+.. autoclass:: malstruct.SymmetricAdapter
+.. autoclass:: malstruct.Validator
+.. autoclass:: malstruct.Tunnel
+.. autoclass:: malstruct.Compiled

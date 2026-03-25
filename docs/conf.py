@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Construct documentation build configuration file, created by
+# Malstruct documentation build configuration file, created by
 # sphinx-quickstart on Fri Dec 24 05:23:18 2010.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -44,8 +44,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Construct'
-copyright = u'2023, Arkadiusz Bulski, Tomer Filiba, Corbin Simpson'
+project = u'Malstruct'
+copyright = u'2026, Cipher Tech Solutions, Inc.'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -114,7 +114,7 @@ html_theme_options = {"full_logo" : True}
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = "_static/construct-logo2.png"
+html_logo = "_static/malstruct-logo.png"
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -168,7 +168,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Constructdoc'
+htmlhelp_basename = 'Malstructdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -182,7 +182,7 @@ htmlhelp_basename = 'Constructdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'construct.tex', u'Construct Documentation', u'Arkadiusz Bulski', 'manual'),
+  ('index', 'malstruct.tex', u'Malstruct Documentation', u'Cipher Tech Solutions, Inc.', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -214,6 +214,6 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'construct', u'Construct Documentation',
-     [u'Arkadiusz Bulski (taken over from Tomer Filiba and Corbin Simpson)'], 1)
+    ('index', 'malstruct', u'Malstruct Documentation',
+     [u'Cipher Tech Solutions Inc.'], 1)
 ]

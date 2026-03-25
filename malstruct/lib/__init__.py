@@ -1,8 +1,8 @@
-from construct.lib.containers import *
-from construct.lib.binary import *
-from construct.lib.bitstream import *
-from construct.lib.hex import *
-from construct.lib.py3compat import *
+from malstruct.lib.containers import *
+from malstruct.lib.binary import *
+from malstruct.lib.bitstream import *
+from malstruct.lib.hex import *
+from malstruct.lib.py3compat import *
 
 __all__ = [
     'bits2bytes',

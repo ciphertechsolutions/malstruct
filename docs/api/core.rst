@@ -1,5 +1,5 @@
 ==========================================
-``construct.core`` -- entire module
+``malstruct.core`` -- entire module
 ==========================================
 
-.. automodule:: construct.core
+.. automodule:: malstruct.core

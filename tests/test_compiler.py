@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from tests.declarativeunittest import *
-from construct import *
-from construct.lib import *
+from malstruct import *
+from malstruct.lib import *
 
 
 example = Struct(
@@ -53,7 +53,7 @@ example = Struct(
     "enum2" / Enum(Byte),
     "flagsenum1" / FlagsEnum(Byte, zero=0, one=1),
     "flagsenum2" / FlagsEnum(Byte),
-    "mapping" / Mapping(Byte, {"zero":0}),
+    "mapping" / Mapping(Byte, {0:"zero"}),
 
     "struct1" / Struct("field" / Byte, Check(this.field == 0)),
     "struct2" / Struct("field" / Byte, StopIf(True), Error),
@@ -149,7 +149,7 @@ example = Struct(
     # ProcessRotateLeft
     # Checksum
     "compressed_bzip2_data" / Computed(b'BZh91AY&SYSc\x11\x99\x00\x00\x00A\x00@\x00@\x00 \x00!\x00\x82\x83\x17rE8P\x90Sc\x11\x99'),
-    "compressed_bzip2" / RestreamData(this.compressed_bzip2_data, Compressed(GreedyBytes, "bzip2", level=9)),
+    "compressed_bzip2" / RestreamData(this.compressed_bzip2_data, Compressed(GreedyBytes, "bzip2")),
     # Rebuffered
 
     # Lazy

@@ -1,0 +1,15 @@
+# CI Files
+.github/
+.gitlab-ci.yml
+
+# Build Artifacts
+dist/
+build/
+malstruct.egg-info/
+
+# Virtual Environments
+.venv/
+venv/
+
+# Helper Scripts
+matrix.sh

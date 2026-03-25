@@ -2,8 +2,8 @@
 Core API: Bytes and bits
 ========================
 
-.. autofunction:: construct.Bytes
-.. autofunction:: construct.GreedyBytes
-.. autofunction:: construct.setGlobalPrintFullStrings
-.. autofunction:: construct.Bitwise
-.. autofunction:: construct.Bytewise
+.. autofunction:: malstruct.Bytes
+.. autofunction:: malstruct.GreedyBytes
+.. autofunction:: malstruct.setGlobalPrintFullStrings
+.. autofunction:: malstruct.Bitwise
+.. autofunction:: malstruct.Bytewise

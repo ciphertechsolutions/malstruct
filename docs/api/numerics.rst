@@ -1,9 +1,9 @@
-========================
+=============================
 Core API: Integers and Floats
-========================
+=============================
 
-.. autofunction:: construct.FormatField
-.. autofunction:: construct.BytesInteger
-.. autofunction:: construct.BitsInteger
-.. autofunction:: construct.VarInt
-.. autofunction:: construct.ZigZag
+.. autofunction:: malstruct.FormatField
+.. autofunction:: malstruct.BytesInteger
+.. autofunction:: malstruct.BitsInteger
+.. autofunction:: malstruct.VarInt
+.. autofunction:: malstruct.ZigZag

@@ -2,7 +2,7 @@
 Enhanced Meta File
 """
 
-from construct import *
+from malstruct import *
 
 record_type = Enum(Int32ul,
     ABORTPATH = 68,
@@ -105,44 +105,44 @@ record_type = Enum(Int32ul,
 
 generic_record = Struct(
     "record_type" / record_type,
-    "record_size" / Int32ul,      # Size of the record in bytes 
+    "record_size" / Int32ul,      # Size of the record in bytes
     "params" / RawCopy(Array((this.record_size - 8) // 4, Int32ul)),
 )
 
 header_record = Struct(
     Const("HEADER", record_type),
-    "record_size" / Int32ul,              # Size of the record in bytes 
-    "bounds_left" / Int32sl,              # Left inclusive bounds 
-    "bounds_right" / Int32sl,             # Right inclusive bounds 
-    "bounds_top" / Int32sl,               # Top inclusive bounds 
-    "bounds_bottom" / Int32sl,            # Bottom inclusive bounds 
-    "frame_left" / Int32sl,               # Left side of inclusive picture frame 
-    "frame_right" / Int32sl,              # Right side of inclusive picture frame 
-    "frame_top" / Int32sl,                # Top side of inclusive picture frame 
-    "frame_bottom" / Int32sl,             # Bottom side of inclusive picture frame 
+    "record_size" / Int32ul,              # Size of the record in bytes
+    "bounds_left" / Int32sl,              # Left inclusive bounds
+    "bounds_right" / Int32sl,             # Right inclusive bounds
+    "bounds_top" / Int32sl,               # Top inclusive bounds
+    "bounds_bottom" / Int32sl,            # Bottom inclusive bounds
+    "frame_left" / Int32sl,               # Left side of inclusive picture frame
+    "frame_right" / Int32sl,              # Right side of inclusive picture frame
+    "frame_top" / Int32sl,                # Top side of inclusive picture frame
+    "frame_bottom" / Int32sl,             # Bottom side of inclusive picture frame
     "signature" / Const(0x464D4520, Int32ul),
-    "version" / Int32ul,                  # Version of the metafile 
-    "size" / Int32ul,                     # Size of the metafile in bytes 
-    "num_of_records" / Int32ul,           # Number of records in the metafile 
-    "num_of_handles" / Int16ul,           # Number of handles in the handle table 
+    "version" / Int32ul,                  # Version of the metafile
+    "size" / Int32ul,                     # Size of the metafile in bytes
+    "num_of_records" / Int32ul,           # Number of records in the metafile
+    "num_of_handles" / Int16ul,           # Number of handles in the handle table
     Padding(2),
-    "description_size" / Int32ul,         # Size of description string in WORDs 
-    "description_offset" / Int32ul,       # Offset of description string in metafile 
-    "num_of_palette_entries" / Int32ul,   # Number of color palette entries 
-    "device_width_pixels" / Int32sl,      # Width of reference device in pixels 
-    "device_height_pixels" / Int32sl,     # Height of reference device in pixels 
+    "description_size" / Int32ul,         # Size of description string in WORDs
+    "description_offset" / Int32ul,       # Offset of description string in metafile
+    "num_of_palette_entries" / Int32ul,   # Number of color palette entries
+    "device_width_pixels" / Int32sl,      # Width of reference device in pixels
+    "device_height_pixels" / Int32sl,     # Height of reference device in pixels
     "device_width_mm" / Int32sl,          # Width of reference device in millimeters
     "device_height_mm" / Int32sl,         # Height of reference device in millimeters
-    
-    "description" / Pointer(this.description_offset, 
+
+    "description" / Pointer(this.description_offset,
         PaddedString(this.description_size * 2, "utf8")),
-    
+
     # padding up to end of record
     Padding(this.record_size - 88),
 )
 
 emf_file = Struct(
     "header_record" / header_record,
-    "records" / Array(this.header_record.num_of_records - 1, 
+    "records" / Array(this.header_record.num_of_records - 1,
         generic_record),
 )

@@ -1,6 +1,6 @@
 from tests.declarativeunittest import *
-from construct import *
-from construct.lib import *
+from malstruct import *
+from malstruct.lib import *
 
 
 def test_getitem():
@@ -321,4 +321,3 @@ def test_method_shadowing_2():
     assert Container.search(c, 'x') == 42
     assert Container.search(c, 'y') == None
     pytest.raises(ZeroDivisionError, c.search, 'x')
-

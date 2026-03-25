@@ -2,10 +2,10 @@
 Core API: Conditional
 ===============================
 
-.. autofunction:: construct.Union
-.. autofunction:: construct.Select
-.. autofunction:: construct.Optional
-.. autofunction:: construct.If
-.. autofunction:: construct.IfThenElse
-.. autofunction:: construct.Switch
-.. autofunction:: construct.StopIf
+.. autofunction:: malstruct.Union
+.. autofunction:: malstruct.Select
+.. autofunction:: malstruct.Optional
+.. autofunction:: malstruct.If
+.. autofunction:: malstruct.IfThenElse
+.. autofunction:: malstruct.Switch
+.. autofunction:: malstruct.StopIf

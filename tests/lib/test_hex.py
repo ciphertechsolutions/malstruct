@@ -1,5 +1,5 @@
 from tests.declarativeunittest import *
-from construct.lib.hex import *
+from malstruct.lib.hex import *
 
 
 def test_hexdump():

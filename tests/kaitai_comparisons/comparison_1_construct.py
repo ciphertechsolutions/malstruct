@@ -1,4 +1,4 @@
-from construct import *
+from malstruct import *
 
 d = Struct(
     "count" / Int32ul,

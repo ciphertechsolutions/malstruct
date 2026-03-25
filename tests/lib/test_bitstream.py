@@ -1,5 +1,5 @@
 from tests.declarativeunittest import *
-from construct.lib.bitstream import *
+from malstruct.lib.bitstream import *
 
 
 def test_restreamed():

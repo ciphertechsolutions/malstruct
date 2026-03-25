@@ -1,4 +1,4 @@
-from construct.lib.py3compat import *
+from malstruct.lib.py3compat import *
 import re
 import sys
 

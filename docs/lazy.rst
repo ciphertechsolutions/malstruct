@@ -13,7 +13,7 @@ This wrapper allows you to do lazy parsing of individual fields inside a normal 
 >>> d = Lazy(Byte)
 >>> x = d.parse(b'\x00')
 >>> x
-<function construct.core.Lazy._parse.<locals>.execute>
+<function malstruct.core.Lazy._parse.<locals>.execute>
 >>> x()
 0
 >>> d.build(0)
@@ -68,11 +68,11 @@ To break recursion, use ``If`` field. See examples.
     )
 
     >>> print(d.parse(b"\x05\x09\x00"))
-    Container: 
+    Container:
         value = 5
-        next = Container: 
+        next = Container:
             value = 9
-            next = Container: 
+            next = Container:
                 value = 0
                 next = None
 
@@ -90,14 +90,14 @@ To break recursion, use ``If`` field. See examples.
         print(x)
 
     # print outputs
-    Container: 
+    Container:
         value = 5
         next = \t\x00 (total 2)
     # print outputs
-    Container: 
+    Container:
         value = 9
         next = \x00 (total 1)
     # print outputs
-    Container: 
+    Container:
         value = 0
         next =  (total 0)

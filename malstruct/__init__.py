@@ -1,12 +1,12 @@
 r"""
-Construct 2 -- Parsing Made Fun
+Malstruct -- Parsing Made Fun
 
 Homepage:
-	https://github.com/construct/construct
-    http://construct.readthedocs.org
+	https://github.com/ciphertechsolutions/malstruct
+    https://ciphertechsolutions.github.io/malstruct/
 
 Hands-on example:
-    >>> from construct import *
+    >>> from malstruct import *
     >>> s = Struct(
     ...     "a" / Byte,
     ...     "b" / Short,
@@ -19,17 +19,17 @@ Hands-on example:
     b"\x01\x02\x03"
 """
 
-from construct.core import *
-from construct.expr import *
-from construct.debug import *
-from construct.version import *
-from construct import lib
+from malstruct.core import *
+from malstruct.expr import *
+from malstruct.debug import *
+from malstruct.version import *
+from malstruct import lib
 
 
 #===============================================================================
 # metadata
 #===============================================================================
-__author__ = "Arkadiusz Bulski <arek.bulski@gmail.com>, Tomer Filiba <tomerfiliba@gmail.com>, Corbin Simpson <MostAwesomeDude@gmail.com>"
+__author__ = "Cipher Tech Solutions Inc. <opensource@ciphertechsolutions.com>"
 __version__ = version_string
 
 #===============================================================================
@@ -204,6 +204,7 @@ __all__ = [
     'Tunnel',
     'Union',
     'UnionError',
+    'utils',
     'ValidationError',
     'Validator',
     'VarInt',

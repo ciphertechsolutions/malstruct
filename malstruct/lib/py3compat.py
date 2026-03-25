@@ -7,7 +7,7 @@ ONWINDOWS = platform.system() == "Windows"
 
 INT2BYTE_CACHE = {i: bytes([i]) for i in range(256)}
 
-# these 2 function probably should be moved to construct.lib.binary
+# these 2 function probably should be moved to malstruct.lib.binary
 def int2byte(character: int) -> bytes:
     """Converts integer in range 0..255 into 1-byte string."""
     return INT2BYTE_CACHE[character]

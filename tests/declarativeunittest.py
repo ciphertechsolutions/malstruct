@@ -6,8 +6,8 @@ skipif = pytest.mark.skipif
 
 import os, math, random, collections, itertools, io, hashlib, binascii
 
-from construct import *
-from construct.lib import *
+from malstruct import *
+from malstruct.lib import *
 
 if not ONWINDOWS:
     devzero = open("/dev/zero", "rb")

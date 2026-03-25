@@ -9,7 +9,7 @@ http://download.microsoft.com/download/1/6/1/161ba512-40e2-4cc9-843a-923143f3456
 http://download.microsoft.com/download/9/c/5/9c5b2167-8017-4bae-9fde-d599bac8184a/pecoff_v8.doc
 """
 
-from construct import *
+from malstruct import *
 import time
 
 
@@ -200,7 +200,7 @@ coff_header = Struct(
         UNIPROCESSOR_ONLY = 0x4000,
         BIG_ENDIAN_MACHINE = 0x8000,
     ),
-    "symbol_table" / Pointer(this.symbol_table_pointer, 
+    "symbol_table" / Pointer(this.symbol_table_pointer,
         Array(this.number_of_symbols, symbol_table))
 )
 
@@ -343,7 +343,7 @@ section = "section" / Struct(
         MEM_WRITE = 0x80000000,
     ),
 
-    "raw_data" / Pointer(this.raw_data_pointer, 
+    "raw_data" / Pointer(this.raw_data_pointer,
         Bytes(this.raw_data_size)),
 
     "line_numbers" / Pointer(this.line_numbers_pointer,
@@ -374,6 +374,6 @@ pe32_file = "pe32_file" / Struct(
     "_end_of_optional_header" / Tell,
     # this code is just weird
     Padding(lambda this: min(0, this.coff_header.optional_header_size - this._end_of_optional_header + this._start_of_optional_header)),
-    "sections" / Array(this.coff_header.number_of_sections, 
+    "sections" / Array(this.coff_header.number_of_sections,
         section),
 )

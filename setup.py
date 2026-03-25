@@ -1,29 +1,49 @@
 #!/usr/bin/env python
 from setuptools import setup
-from construct.version import version_string
+from malstruct.version import version_string
 
 setup(
-    name = "construct",
+    name = "malstruct",
     version = version_string,
     packages = [
-        'construct',
-        'construct.lib',
+        "malstruct",
+        "malstruct.lib",
+        "malstruct.utils",
     ],
     license = "MIT",
     description = "A powerful declarative symmetric parser/builder for binary data",
     long_description = open("README.rst").read(),
     platforms = ["POSIX", "Windows"],
-    url = "http://construct.readthedocs.org",
+    url = "https://ciphertechsolutions.github.io/malstruct/",
     project_urls = {
-        "Source": "https://github.com/construct/construct",
-        "Documentation": "https://construct.readthedocs.io/en/latest/",
-        "Issues": "https://github.com/construct/construct/issues",
+        "Source": "https://github.com/ciphertechsolutions/malstruct",
+        "Documentation": "https://ciphertechsolutions.github.io/malstruct/",
+        "Issues": "https://github.com/ciphertechsolutions/malstruct/issues",
     },
-    author = "Arkadiusz Bulski, Tomer Filiba, Corbin Simpson",
-    author_email = "arek.bulski@gmail.com, tomerfiliba@gmail.com, MostAwesomeDude@gmail.com",
-    python_requires = ">=3.8",
+    author="Cipher Tech Solutions, Inc",
+    author_email="opensource@ciphertechsolutions.com",
+    maintainer="Cipher Tech Solutions, Inc",
+    maintainer_email="opensource@ciphertechsolutions.com",
+    python_requires = ">=3.10",
     install_requires = [],
+    package_data={
+        "malstruct": ["utils/template.html"]
+    },
     extras_require = {
+        "all": [
+            "numpy",
+            "arrow",
+            "ruamel.yaml",
+            "cloudpickle",
+            "lz4",
+            "cryptography",
+            "pyelftools",
+            "jinja2",
+            "pefile>=2019.4.18",
+        ],
+        "arm": [
+            "pyelftools",
+        ],
         "extras": [
             "numpy",
             "arrow",
@@ -32,8 +52,15 @@ setup(
             "lz4",
             "cryptography",
         ],
+        "html": [
+            "jinja2"
+        ],
+        "pe": [
+            "pefile>=2019.4.18",
+        ]
     },
     keywords = [
+        "malstruct",
         "construct",
         "kaitai",
         "declarative",
@@ -58,11 +85,11 @@ setup(
         "Topic :: Software Development :: Build Tools",
         "Topic :: Software Development :: Code Generators",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],

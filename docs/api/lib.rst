@@ -1,5 +1,5 @@
 ==========================================
-``construct.lib`` -- entire module
+``malstruct.lib`` -- entire module
 ==========================================
 
-.. automodule:: construct.lib
+.. automodule:: malstruct.lib

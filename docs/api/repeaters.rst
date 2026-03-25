@@ -2,6 +2,6 @@
 Core API: Repeaters
 ==========================================
 
-.. autofunction:: construct.Array
-.. autofunction:: construct.GreedyRange
-.. autofunction:: construct.RepeatUntil
+.. autofunction:: malstruct.Array
+.. autofunction:: malstruct.GreedyRange
+.. autofunction:: malstruct.RepeatUntil

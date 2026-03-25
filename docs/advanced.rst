@@ -1,6 +1,6 @@
-============
+==================
 The Basics, part 2
-============
+==================
 
 
 Integers and floats
@@ -83,7 +83,7 @@ Strings
 
 .. note::
 
-    Encodings like UTF8, UTF16, UTF32 (including little-endian) work fine with all ``String*`` classes. However two of them, ``PaddedString`` and ``CString``, support only encodings listed explicitly in :class:`~construct.core.possiblestringencodings` .
+    Encodings like UTF8, UTF16, UTF32 (including little-endian) work fine with all ``String*`` classes. However two of them, ``PaddedString`` and ``CString``, support only encodings listed explicitly in :class:`~malstruct.core.possiblestringencodings` .
 
 ``PaddedString`` is a fixed-length construct that pads built string with null bytes, and strips those same null bytes when parsing. Strings can also be trimmed when building. If you supply a too long string, the construct will chop it off apart instead of raising a ``StringError``.
 
@@ -130,7 +130,7 @@ EnumIntegerString.new(1, 'one')
 >>> d.parse(b"\xff")
 255
 
-Note that string values can also be obtained using attribute members. 
+Note that string values can also be obtained using attribute members.
 
 >>> d.one
 EnumIntegerString.new(1, 'one')
@@ -149,7 +149,7 @@ Container(one=True, two=True, four=False, eight=False)
 >>> d.build(dict(one=True, two=True))
 b'\x03'
 
-Note that string values can also be obtained using attribute members. 
+Note that string values can also be obtained using attribute members.
 
 >>> d.build(d.one | d.two)
 b'\x03'

@@ -2,8 +2,8 @@
 Core API: Debugging
 ================================
 
-.. autofunction:: construct.Probe
-.. autofunction:: construct.setGlobalPrintFullStrings
-.. autofunction:: construct.setGlobalPrintFalseFlags
-.. autofunction:: construct.setGlobalPrintPrivateEntries
-.. autofunction:: construct.Debugger
+.. autofunction:: malstruct.Probe
+.. autofunction:: malstruct.setGlobalPrintFullStrings
+.. autofunction:: malstruct.setGlobalPrintFalseFlags
+.. autofunction:: malstruct.setGlobalPrintPrivateEntries
+.. autofunction:: malstruct.Debugger

@@ -10,7 +10,7 @@ Fields are the most fundamental unit of construction: they **parse** (read data 
 
 Some examples of parsing:
 
->>> from construct import Int16ub, Int16ul
+>>> from malstruct import Int16ub, Int16ul
 >>> Int16ub.parse(b"\x01\x02")
 258
 >>> Int16ul.parse(b"\x01\x02")
@@ -18,7 +18,151 @@ Some examples of parsing:
 
 Some examples of building:
 
->>> from construct import Int16ub, Int16sb
+>>> from malstruct import Int16ub, Int16sb
+>>> Int16ub.build(31337)
+b'zi'
+>>> Int16sb.build(-31337)
+b'\x85\x97'
+
+Other fields like:
+
+>>> Flag.parse(b"\x01")
+True
+
+>>> d = Enum(Byte, g=8, h=11).parse(b"\x08")
+>>> d.parse(b"\x08")
+EnumIntegerString.new(8, 'g')
+>>> str(_)
+'g'
+>>> d.build('g')
+b'\x08'
+>>> d.build(11)
+b'\x0b'
+
+>>> Float32b.build(12.345)
+b'AE\x85\x1f'
+>>> Single.parse(_)
+12.345000267028809
+
+Some examples of parsing:
+
+>>> from malstruct import Int16ub, Int16ul
+>>> Int16ub.parse(b"\x01\x02")
+258
+>>> Int16ul.parse(b"\x01\x02")
+513
+
+Some examples of building:
+
+>>> from malstruct import Int16ub, Int16sb
+>>> Int16ub.build(31337)
+b'zi'
+>>> Int16sb.build(-31337)
+b'\x85\x97'
+
+Other fields like:
+
+>>> Flag.parse(b"\x01")
+True
+
+>>> d = Enum(Byte, g=8, h=11).parse(b"\x08")
+>>> d.parse(b"\x08")
+EnumIntegerString.new(8, 'g')
+>>> str(_)
+'g'
+>>> d.build('g')
+b'\x08'
+>>> d.build(11)
+b'\x0b'
+
+>>> Float32b.build(12.345)
+b'AE\x85\x1f'
+>>> Single.parse(_)
+12.345000267028809
+
+Some examples of parsing:
+
+>>> from malstruct import Int16ub, Int16ul
+>>> Int16ub.parse(b"\x01\x02")
+258
+>>> Int16ul.parse(b"\x01\x02")
+513
+
+Some examples of building:
+
+>>> from malstruct import Int16ub, Int16sb
+>>> Int16ub.build(31337)
+b'zi'
+>>> Int16sb.build(-31337)
+b'\x85\x97'
+
+Other fields like:
+
+>>> Flag.parse(b"\x01")
+True
+
+>>> d = Enum(Byte, g=8, h=11).parse(b"\x08")
+>>> d.parse(b"\x08")
+EnumIntegerString.new(8, 'g')
+>>> str(_)
+'g'
+>>> d.build('g')
+b'\x08'
+>>> d.build(11)
+b'\x0b'
+
+>>> Float32b.build(12.345)
+b'AE\x85\x1f'
+>>> Single.parse(_)
+12.345000267028809
+
+Some examples of parsing:
+
+>>> from malstruct import Int16ub, Int16ul
+>>> Int16ub.parse(b"\x01\x02")
+258
+>>> Int16ul.parse(b"\x01\x02")
+513
+
+Some examples of building:
+
+>>> from malstruct import Int16ub, Int16sb
+>>> Int16ub.build(31337)
+b'zi'
+>>> Int16sb.build(-31337)
+b'\x85\x97'
+
+Other fields like:
+
+>>> Flag.parse(b"\x01")
+True
+
+>>> d = Enum(Byte, g=8, h=11).parse(b"\x08")
+>>> d.parse(b"\x08")
+EnumIntegerString.new(8, 'g')
+>>> str(_)
+'g'
+>>> d.build('g')
+b'\x08'
+>>> d.build(11)
+b'\x0b'
+
+>>> Float32b.build(12.345)
+b'AE\x85\x1f'
+>>> Single.parse(_)
+12.345000267028809
+
+Some examples of parsing:
+
+>>> from malstruct import Int16ub, Int16ul
+>>> Int16ub.parse(b"\x01\x02")
+258
+>>> Int16ul.parse(b"\x01\x02")
+513
+
+Some examples of building:
+
+>>> from malstruct import Int16ub, Int16sb
 >>> Int16ub.build(31337)
 b'zi'
 >>> Int16sb.build(-31337)
@@ -64,7 +208,7 @@ SizeofError: Error in path (sizeof)
 Structs
 =======
 
-For those of you familiar with C, Structs are very intuitive, but here's a short explanation for the larger audience. A ``Struct`` is a collection of ordered and usually named fields (field means an instance of ``Construct`` class), that are parsed/built in that same order. Names are used for two reasons: (1) when parsed, values are returned in a dictionary where keys are matching the names, and when build, each field gets built with a value taken from a dictionary from a matching key (2) fields' parsed and built values are inserted into the context dictionary under matching names.
+For those of you familiar with C, Structs are very intuitive, but here's a short explanation for the larger audience. A ``Struct`` is a collection of ordered and usually named fields (field means an instance of ``Malstruct`` class), that are parsed/built in that same order. Names are used for two reasons: (1) when parsed, values are returned in a dictionary where keys are matching the names, and when build, each field gets built with a value taken from a dictionary from a matching key (2) fields' parsed and built values are inserted into the context dictionary under matching names.
 
 >>> d = Struct(
 ...     "signature" / Const(b"BMP"),
@@ -156,7 +300,7 @@ Container:
     inner = Container:
         data = b'1234' (total 4)
 
-It used to be that Structs could have been embedded (flattened out). However, this created more problems than it solved so this feature was eventually removed. Since Construct 2.10 it is no longer possible to embed structs. You should, and always should have been, be nesting them just like in the example above.
+It used to be that Structs could have been embedded (flattened out). However, this created more problems than it solved so this feature was eventually removed. Since Malstruct 2.10 it is no longer possible to embed structs. You should, and always should have been, be nesting them just like in the example above.
 
 
 Showing path information in exceptions
@@ -180,7 +324,7 @@ If your construct throws an exception, for any reason, there should be a "path i
     ...     )
     ... )
     >>> x.parse(b'\xff' * 3)
-    construct.core.StreamError: Error in path (parsing) -> a -> b -> c -> foo
+    malstruct.core.StreamError: Error in path (parsing) -> a -> b -> c -> foo
     stream read less than specified amount, expected 1, found 0
 
 Note that compiled parsing classes may not provide a path information.
@@ -208,14 +352,14 @@ There are few additional, hidden entries in the context dictionary. They are mos
     >>> d.parse(b'', z=2)
     --------------------------------------------------
     Probe, path is (parsing), into is None
-    Container: 
-        _ = Container: 
+    Container:
+        _ = Container:
             z = 2
             _parsing = True
             _building = False
             _sizing = False
             _params = <recursion detected>
-        _params = Container: 
+        _params = Container:
             z = 2
             _parsing = True
             _building = False
@@ -225,15 +369,15 @@ There are few additional, hidden entries in the context dictionary. They are mos
         _parsing = True
         _building = False
         _sizing = False
-        _subcons = Container: 
+        _subcons = Container:
             x = <Renamed x +nonbuild <Computed +nonbuild>>
             inner = <Renamed inner +nonbuild <Struct +nonbuild>>
         _io = <_io.BytesIO object at 0x7fd91e7313b8>
         _index = None
         x = 1
-        inner = Container: 
+        inner = Container:
             _io = <_io.BytesIO object at 0x7fd91e7313b8>
-            inner2 = Container: 
+            inner2 = Container:
                 _io = <_io.BytesIO object at 0x7fd91e7313b8>
                 x = 1
                 z = 2
@@ -248,7 +392,7 @@ Explanation is as follows:
 * ``_params`` is the level on which externally provided values reside, those passed as parse() and build() keyword arguments
 * ``_root`` is the outer-most Struct, this entry might not exist if you do not use Structs
 * ``_parsing``, ``_building`` and ``_sizing`` are boolean values that are set by ``parse``, ``build`` and ``sizeof`` public API methods
-* ``_subcons`` is a list of ``Construct`` instances, this ``Struct`` members
+* ``_subcons`` is a list of ``Malstruct`` instances, this ``Struct`` members
 * ``_io`` is a memory-stream or file-stream or whatever was provided to ``parse_stream`` public API method
 * ``_index`` is an indexing number used eg. in ``Array``
 * (parsed members are also added under matching names)

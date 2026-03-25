@@ -3,7 +3,7 @@ The Context
 ===========
 
 
-Meta constructs are the key to the declarative power of Construct. Meta constructs are constructs which are affected by the context of the construction (during parsing and building). The context is a dictionary that is created during the parsing and building process by Structs and Sequences, and is "propagated" down and up to all constructs along the way, so that other members can access other members parsing or building intermediate results. It basically represents a mirror image of the construction tree, as it is altered by the different constructs. Nested structs create nested contexts, just as they create nested containers.
+Meta constructs are the key to the declarative power of Malstruct. Meta constructs are constructs which are affected by the context of the construction (during parsing and building). The context is a dictionary that is created during the parsing and building process by Structs and Sequences, and is "propagated" down and up to all constructs along the way, so that other members can access other members parsing or building intermediate results. It basically represents a mirror image of the construction tree, as it is altered by the different constructs. Nested structs create nested contexts, just as they create nested containers.
 
 In order to see the context, let's try this snippet:
 
@@ -75,7 +75,7 @@ Container(data=b'\x00\x00\x00\x00')
 
 
 Refering to inlined constructs
-============================
+==============================
 
 If you need to refer to a subcon like ``Enum``, that was inlined in the struct (and therefore wasnt assigned to any variable in the namespace), you can access it as ``Struct`` attribute under same name. This feature is particularly handy when using ``Enum`` and ``EnumFlag`` classes.
 

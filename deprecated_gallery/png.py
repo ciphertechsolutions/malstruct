@@ -3,11 +3,11 @@ Portable Network Graphics (PNG) file format
 Official spec: http://www.w3.org/TR/PNG
 
 Original code contributed by Robin Munn (rmunn at pobox dot com)
-(although the code has been extensively reorganized to meet Construct's
+(although the code has been extensively reorganized to meet Malstruct's
 coding conventions)
 """
 
-from construct import *
+from malstruct import *
 
 #===============================================================================
 # utils
@@ -17,7 +17,7 @@ coord = Struct(
     "y" / Int32ub,
 )
 
-compression_method = "compression_method" / Enum(Byte, 
+compression_method = "compression_method" / Enum(Byte,
     deflate = 0,
 )
 
@@ -37,7 +37,7 @@ idat_info = "idat_info" / Bytes(this.length)
 #===============================================================================
 # 11.3.2.1: tRNS - Transparency
 #===============================================================================
-trns_info = "trns_info" / Switch(this._.image_header.color_type, 
+trns_info = "trns_info" / Switch(this._.image_header.color_type,
     {
         "greyscale": Int16ub,
         "truecolor": Int16ub[3],
@@ -72,7 +72,7 @@ iccp_info = "iccp_info" / Struct(
 #===============================================================================
 # 11.3.3.4: sBIT - Significant bits
 #===============================================================================
-sbit_info = "sbit_info" / Switch(this._.image_header.color_type, 
+sbit_info = "sbit_info" / Switch(this._.image_header.color_type,
     {
         "greyscale": Byte,
         "truecolor": Byte[3],
@@ -127,7 +127,7 @@ itxt_info = "itxt_info" / Struct(
 #===============================================================================
 # 11.3.5.1: bKGD - Background color
 #===============================================================================
-bkgd_info = "bkgd_info" / Switch(this._.image_header.color_type, 
+bkgd_info = "bkgd_info" / Switch(this._.image_header.color_type,
     {
         "greyscale": Int16ub[1],
         "greywithalpha": Int16ub[1],
@@ -148,8 +148,8 @@ hist_info = "frequency" / Array(this._.length / 2, Int16ub)
 phys_info = "phys_info" / Struct(
     "pixels_per_unit_x" / Int32ub,
     "pixels_per_unit_y" / Int32ub,
-    "unit" / Enum(Byte, 
-        unknown = 0, 
+    "unit" / Enum(Byte,
+        unknown = 0,
         meter = 1,
     ),
 )

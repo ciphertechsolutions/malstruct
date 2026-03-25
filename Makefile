@@ -11,7 +11,7 @@ xfails:
 	python3 -m pytest --benchmark-disable --verbose | egrep --color=always "xfail|XFAIL|xpass|XPASS"
 
 cover:
-	python3 -m pytest --benchmark-disable --cov construct --cov-report html --cov-report term --verbose
+	python3 -m pytest --benchmark-disable --cov malstruct --cov-report html --cov-report term --verbose
 
 bench:
 	python3 -m pytest --benchmark-enable --benchmark-columns=min,stddev --benchmark-sort=name --benchmark-compare
@@ -34,4 +34,3 @@ upload:
 	python3 ./setup.py sdist bdist_wheel
 	python3 -m twine check dist/*
 	python3 -m twine upload dist/*
-

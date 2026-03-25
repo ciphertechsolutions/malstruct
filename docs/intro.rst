@@ -2,7 +2,7 @@
 Introduction
 ============
 
-Construct is a powerful **declarative** and **symmetrical** parser and builder for binary data.
+Malstruct is a powerful **declarative** and **symmetrical** parser and builder for binary data that was forked from `construct <https://github.com/construct/construct>`_ as of release 2.10.70.
 
 Instead of writing *imperative code* to parse a piece of data, you declaratively define a *data structure* that describes your data. As this data structure is not code, you can use it in one direction to *parse* data into Pythonic objects, and in the other direction, to *build* objects into binary data.
 
@@ -45,26 +45,26 @@ A ``Sequence`` is a collection of ordered fields, and differs from ``Array`` and
     ['', [52, 51, 54, 49, 55, 56, 57, 52, 51, 50, 49, 57, 55]]
 
 
-Construct has been used to parse:
+Malstruct has been used to parse:
 
 * Networking formats like Ethernet, IP, ICMP, IGMP, TCP, UDP, DNS, DHCP
 * Binary file formats like Bitmaps, PNG, GIF, EMF, WMF
 * Executable binaries formats like ELF32, PE32
 * Filesystem layouts like Ext2, Fat16, MBR
 
-See more examples in `current gallery <https://github.com/construct/construct/tree/master/gallery>`_ and in `deprecated gallery <https://github.com/construct/construct/tree/master/deprecated_gallery>`_.
+See more examples in `current gallery <https://github.com/ciphertechsolutions/malstruct/tree/master/gallery>`_ and in `deprecated gallery <https://github.com/ciphertechsolutions/malstruct/tree/master/deprecated_gallery>`_.
 
 
 Development and support
 -------------------------
-Please use `github issues <https://github.com/construct/construct/issues>`_ to ask general questions, make feature requests (and vote for them), report issues and bugs, and to submit PRs. Feel free to request any changes that would support your project.
+Please use `GitHub Issues <https://github.com/ciphertechsolutions/malstruct/issues>`_ to ask general questions, make feature requests (and vote for them), report issues and bugs, and to submit PRs. Feel free to request any changes that would support your project.
 
-Main documentation is at `readthedocs <http://construct.readthedocs.org>`_, which is substantial. Source is at `github <https://github.com/construct/construct>`_. Releases are available at `pypi <https://pypi.org/project/construct/>`_.
+Main documentation is at `readthedocs <http://malstruct.readthedocs.org>`_, which is substantial. Source is at `GitHub <https://github.com/ciphertechsolutions/malstruct>`_. Releases are available at `PyPi <https://pypi.org/project/malstruct/>`_.
 
 
 Requirements
 --------------
-Construct should run on CPython 3.8 3.9 3.10 3.11 3.12 (and probably beta) and PyPy implementations. PyPy achieves much better performance.
+Malstruct should run on CPython 3.10 3.11 3.12 3.13, 3.14 (and probably beta) and PyPy implementations. PyPy achieves much better performance.
 
 Following modules are needed only if you want to use certain features:
 
@@ -82,8 +82,8 @@ Installing
 
 The library is downloadable and installable from Pypi. Just use standard command-line. There are no hard dependencies, but if you would like to install all supported (not required) modules listed above, you can use the 2nd command-line form.
 
-* ``pip install construct``
-* ``pip install construct[extras]``
+* ``pip install malstruct``
+* ``pip install malstruct[extras]``
 
 
 Type Hints / Type Annotations

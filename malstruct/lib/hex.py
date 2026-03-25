@@ -1,4 +1,4 @@
-from construct.lib.py3compat import *
+from malstruct.lib.py3compat import *
 import binascii
 
 
@@ -71,14 +71,11 @@ def hexdump(data, linesize):
     else:
         raise ValueError("hexdump cannot process more than 16**8 or 4294967296 bytes")
     prettylines = []
-    prettylines.append('hexundump("""')
     for i in range(0, len(data), linesize):
         line = data[i:i+linesize]
         hextext = " ".join(HEXPRINT[b] for b in line)
         rawtext = "".join(PRINTABLE[b] for b in line)
         prettylines.append(fmt % (i, str(hextext), str(rawtext)))
-    prettylines.append('""")')
-    prettylines.append("")
     return "\n".join(prettylines)
 
 
@@ -87,7 +84,7 @@ def hexundump(data, linesize):
     Reverse of `hexdump`.
     """
     raw = []
-    for line in data.split("\n")[1:-2]:
+    for line in data.split("\n"):
         line = line[line.find(" "):].lstrip()
         bytes = [int2byte(int(s,16)) for s in line[:3*linesize].split()]
         raw.extend(bytes)

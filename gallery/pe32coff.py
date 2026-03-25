@@ -1,4 +1,4 @@
-from construct import *
+from malstruct import *
 
 docs = """
 PE/COFF format as used on Windows to store EXE DLL SYS files. This includes 64-bit and .NET code.
@@ -100,7 +100,7 @@ datadirectory = Struct(
 )
 
 optionalheader = Struct(
-    "signature" / Enum(Int16ul, 
+    "signature" / Enum(Int16ul,
         PE32 = 0x10b,
         PE32plus = 0x20b,
         ROMIMAGE = 0x107,
@@ -157,7 +157,7 @@ optionalheader = Struct(
     "heap_commit" / plusfield,
     "loader_flags" / Int32ul, #reserved
     "datadirectories_count" / Int32ul,
-    "datadirectories" / Array(this.datadirectories_count, 
+    "datadirectories" / Array(this.datadirectories_count,
         datadirectory),
 )
 
@@ -214,7 +214,7 @@ section = Struct(
         MEM_READ = 0x40000000,
         MEM_WRITE = 0x80000000,
     ),
-    "rawdata" / Pointer(this.rawdata_pointer, 
+    "rawdata" / Pointer(this.rawdata_pointer,
         Bytes(lambda this: this.rawdata_size if this.rawdata_pointer else 0)),
     "relocations" / Pointer(this.relocations_pointer,
         Array(this.relocations_count, Struct(

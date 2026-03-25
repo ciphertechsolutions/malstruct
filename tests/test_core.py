@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from tests.declarativeunittest import *
-from construct import *
-from construct.lib import *
+from malstruct import *
+from malstruct.core import *
+from malstruct.lib import *
 
 def test_bytes():
     d = Bytes(4)
@@ -426,7 +427,7 @@ def test_flagsenum_enum36():
 
 def test_mapping():
     x = object
-    d = Mapping(Byte, {x:0})
+    d = Mapping(Byte, {0:x})
     common(d, b"\x00", x, 1)
 
 def test_struct():
@@ -571,7 +572,7 @@ def test_computed():
 @xfail(reason="_index fails during parsing or building, not during compilation")
 def test_index():
     d = Array(3, Bytes(this._index+1))
-    common(d, b"abbccc", [b"a", b"bb", b"ccc"])
+    common(d, b"abbccc", [b"a", b"bb", b"ccc"], 6)
     d = GreedyRange(Bytes(this._index+1))
     common(d, b"abbccc", [b"a", b"bb", b"ccc"])
     d = RepeatUntil(lambda o,l,ctx: ctx._index == 2, Bytes(this._index+1))
@@ -677,8 +678,8 @@ def test_focusedseq():
     common(FocusedSeq(this._.s, Const(b"MZ"), "num"/Byte, Terminated), b"MZ\xff", 255, SizeofError, s="num")
 
     d = FocusedSeq("missing", Pass)
-    assert raises(d.parse, b"") == UnboundLocalError
-    assert raises(d.build, {}) == UnboundLocalError
+    assert raises(d.parse, b"") == ConstructError
+    assert raises(d.build, {}) == ConstructError
     assert raises(d.sizeof) == 0
     d = FocusedSeq(this.missing, Pass)
     assert raises(d.parse, b"") == KeyError
@@ -750,11 +751,7 @@ def test_hexdump():
     common(d, b"abcdef", b"abcdef")
     common(d, b"", b"")
     obj = d.parse(b"\x00\x00\x01\x02")
-    repr = \
-'''hexundump("""
-0000   00 00 01 02                                       ....
-""")
-'''
+    repr = '''0000   00 00 01 02                                       ....'''
     pass
     assert str(obj) == repr
     assert str(obj) == repr
@@ -762,11 +759,7 @@ def test_hexdump():
     d = HexDump(RawCopy(Int32ub))
     common(d, b"\x00\x00\x01\x02", dict(data=b"\x00\x00\x01\x02", value=0x0102, offset1=0, offset2=4, length=4), 4)
     obj = d.parse(b"\x00\x00\x01\x02")
-    repr = \
-'''hexundump("""
-0000   00 00 01 02                                       ....
-""")
-'''
+    repr = '''0000   00 00 01 02                                       ....'''
     assert str(obj) == repr
     assert str(obj) == repr
 
@@ -1316,7 +1309,7 @@ def test_compressed_zlib():
     assert d.parse(d.build(zeros)) == zeros
     assert len(d.build(zeros)) < 50
     assert raises(d.sizeof) == SizeofError
-    d = Compressed(GreedyBytes, "zlib", level=9)
+    d = Compressed(GreedyBytes, "zlib", encode_args={"level": 9})
     assert d.parse(d.build(zeros)) == zeros
     assert len(d.build(zeros)) < 50
     assert raises(d.sizeof) == SizeofError
@@ -1327,7 +1320,7 @@ def test_compressed_gzip():
     assert d.parse(d.build(zeros)) == zeros
     assert len(d.build(zeros)) < 50
     assert raises(d.sizeof) == SizeofError
-    d = Compressed(GreedyBytes, "gzip", level=9)
+    d = Compressed(GreedyBytes, "gzip", encode_args={"compresslevel": 9})
     assert d.parse(d.build(zeros)) == zeros
     assert len(d.build(zeros)) < 50
     assert raises(d.sizeof) == SizeofError
@@ -1338,7 +1331,7 @@ def test_compressed_bzip2():
     assert d.parse(d.build(zeros)) == zeros
     assert len(d.build(zeros)) < 50
     assert raises(d.sizeof) == SizeofError
-    d = Compressed(GreedyBytes, "bzip2", level=9)
+    d = Compressed(GreedyBytes, "bzip2", encode_args={"compresslevel": 9})
     assert d.parse(d.build(zeros)) == zeros
     assert len(d.build(zeros)) < 50
     assert raises(d.sizeof) == SizeofError
@@ -1349,7 +1342,7 @@ def test_compressed_lzma():
     assert d.parse(d.build(zeros)) == zeros
     assert len(d.build(zeros)) < 200
     assert raises(d.sizeof) == SizeofError
-    d = Compressed(GreedyBytes, "lzma", level=9)
+    d = Compressed(GreedyBytes, "lzma", encode_args={"preset": 9})
     assert d.parse(d.build(zeros)) == zeros
     assert len(d.build(zeros)) < 200
     assert raises(d.sizeof) == SizeofError
@@ -2305,10 +2298,6 @@ def test_hex_issue_709():
     obj = d.parse(b"\xff")
     assert "x = 0xFF" in str(obj)
 
-    d = HexDump(Bytes(1))
-    obj = d.parse(b"\xff")
-    assert "hexundump" in str(obj)
-
     # The following checks only succeed after fixing the issue
     d = Struct("x" / Hex(Bytes(1)))
     obj = d.parse(b"\xff")
@@ -2316,7 +2305,7 @@ def test_hex_issue_709():
 
     d = Struct("x" / HexDump(Bytes(1)))
     obj = d.parse(b"\xff")
-    assert "x = hexundump" in str(obj)
+    assert "x = 0000" in str(obj)
 
     d = Struct("x" / Struct("y" / Hex(Bytes(1))))
     obj = d.parse(b"\xff")
@@ -2374,7 +2363,7 @@ def test_struct_copy():
         "b" / Int8ub,
     )
     d_copy = copy.copy(d)
-    
+
     common(d, b"\x00\x01\x02", Container(a=1,b=2), 3)
     common(d_copy, b"\x00\x01\x02", Container(a=1,b=2), 3)
 

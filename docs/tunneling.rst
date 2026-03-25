@@ -138,7 +138,10 @@ Instead of data itself (bytes object) you can reference another stream (taken fr
 
 ::
 
-    >>> from construct.lib import *
+    >>> from malstruct.lib import *
+        >>> d = Transformed(Bytes(16), bytes2bits, 2, bits2bytes, 2)
+        >>> d.parse(b"\x00\x00")
+        b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
     >>> d = Transformed(Bytes(16), bytes2bits, 2, bits2bytes, 2)
     >>> d.parse(b"\x00\x00")
     b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
@@ -147,7 +150,10 @@ Instead of data itself (bytes object) you can reference another stream (taken fr
 
 ::
 
-    >>> from construct.lib import *
+    >>> from malstruct.lib import *
+        >>> d = Transformed(GreedyBytes, bytes2bits, None, bits2bytes, None)
+        >>> d.parse(b"\x00\x00")
+        b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
     >>> d = Transformed(GreedyBytes, bytes2bits, None, bits2bytes, None)
     >>> d.parse(b"\x00\x00")
     b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
@@ -266,9 +272,8 @@ Subcons can also be easily encrypted and authenticated in a AEAD manner. Please 
     >>> d.build({"enc_data": {"width": 5, "height": 4}}, key=key128)
     b"o\x11i\x98~H\xc9\x1c\x17\x83\xf6|U:\x1a\x86+\x00\x89\xf7\x8e\xc3L\x04\t\xca\x8a\xc8\xc2\xfb'\xc8"
     >>> d.parse(b"o\x11i\x98~H\xc9\x1c\x17\x83\xf6|U:\x1a\x86+\x00\x89\xf7\x8e\xc3L\x04\t\xca\x8a\xc8\xc2\xfb'\xc8", key=key128)
-    Container: 
+    Container:
         iv = b'o\x11i\x98~H\xc9\x1c\x17\x83\xf6|U:\x1a\x86' (total 16)
-        enc_data = Container: 
+        enc_data = Container:
             width = 5
             height = 4
-
