@@ -1,3 +1,4 @@
 include README.rst
 include LICENSE
 include malstruct/utils/template.html
+include VERSION

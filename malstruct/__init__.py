@@ -24,6 +24,7 @@ from malstruct.expr import *
 from malstruct.debug import *
 from malstruct.version import *
 from malstruct import lib
+from malstruct import utils
 
 
 #===============================================================================

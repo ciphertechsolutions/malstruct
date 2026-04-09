@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 from setuptools import setup
-from malstruct.version import version_string
 
 setup(
     name = "malstruct",
-    version = version_string,
+    version = open("VERSION").read(),
     packages = [
         "malstruct",
         "malstruct.lib",
@@ -25,39 +24,27 @@ setup(
     maintainer="Cipher Tech Solutions, Inc",
     maintainer_email="opensource@ciphertechsolutions.com",
     python_requires = ">=3.10",
-    install_requires = [],
+    install_requires = [
+        "numpy",
+        "arrow",
+        "ruamel.yaml",
+        "cloudpickle",
+        "lz4",
+        "cryptography",
+        "pyelftools",
+        "jinja2",
+        "pefile>=2019.4.18",
+        "lief",
+    ],
     package_data={
         "malstruct": ["utils/template.html"]
     },
     extras_require = {
-        "all": [
-            "numpy",
-            "arrow",
-            "ruamel.yaml",
-            "cloudpickle",
-            "lz4",
-            "cryptography",
-            "pyelftools",
-            "jinja2",
-            "pefile>=2019.4.18",
-        ],
-        "arm": [
-            "pyelftools",
-        ],
-        "extras": [
-            "numpy",
-            "arrow",
-            "ruamel.yaml",
-            "cloudpickle",
-            "lz4",
-            "cryptography",
-        ],
-        "html": [
-            "jinja2"
-        ],
-        "pe": [
-            "pefile>=2019.4.18",
-        ]
+        "all": [],
+        "arm": [],
+        "extras": [],
+        "html": [],
+        "pe": []
     },
     keywords = [
         "malstruct",

@@ -216,7 +216,7 @@ def stream_tell(stream, path=None):
     try:
         return stream.tell()
     except Exception:
-        raise StreamError("stream.tell() failed", path=path)
+        return None
 
 
 def stream_size(stream):
@@ -289,9 +289,12 @@ def _embed(subcon):
 class BytesIOWithOffsets(io.BytesIO):
     @staticmethod
     def from_reading(stream, length: int, path: str):
-        offset = stream_tell(stream, path)
-        contents = stream_read(stream, length, path)
-        return BytesIOWithOffsets(contents, stream, offset)
+        try:
+            offset = stream_tell(stream, path)
+            contents = stream_read(stream, length, path)
+            return BytesIOWithOffsets(contents, stream, offset)
+        except (io.UnsupportedOperation, StreamError):
+            return io.BytesIO(stream_read(stream, length, path))
 
     def __init__(self, contents: bytes, parent_stream, offset: int):
         super().__init__(contents)
@@ -4804,6 +4807,7 @@ class OffsettedEnd(Subconstruct):
 
     :param endoffset: integer or context lambda, only negative offsets or zero are allowed
     :param subcon: Construct instance
+    :param absolute: Seek relative to the start of the stream rather than relative to the last occurence of a subconstruct
 
     :raises StreamError: could not read enough bytes
     :raises StreamError: reads behind the stream (if endoffset is positive)
@@ -4819,9 +4823,10 @@ class OffsettedEnd(Subconstruct):
         Container(header=b'\x01\x02', data=b'\x03\x04\x05', footer=b'\x06\x07')
     """
 
-    def __init__(self, endoffset, subcon):
+    def __init__(self, endoffset, subcon, absolute=False):
         super().__init__(subcon)
         self.endoffset = endoffset
+        self.absolute = absolute
 
     def _parse(self, stream, context, path):
         endoffset = evaluate(self.endoffset, context)
@@ -4830,7 +4835,7 @@ class OffsettedEnd(Subconstruct):
         endpos = stream_tell(stream, path)
         stream_seek(stream, curpos, 0, path)
         length = endpos + endoffset - curpos
-        substream = BytesIOWithOffsets.from_reading(stream, length, path)
+        substream = BytesIOWithOffsets.from_reading(stream, length, path) if self.absolute else io.BytesIO(stream_read(stream, length, path))
         return self.subcon._parsereport(substream, context, path)
 
     def _build(self, obj, stream, context, path):
@@ -5121,6 +5126,7 @@ class Prefixed(Subconstruct):
     :param lengthfield: Construct instance, field used for storing the length
     :param subcon: Construct instance, subcon used for storing the value
     :param includelength: optional, bool, whether length field should include its own size, default is False
+    :param absolute: Seek relative to the start of the stream rather than relative to the last occurence of a subconstruct
 
     :raises StreamError: requested reading negative amount, could not read enough bytes, requested writing different amount than actual data, or could not write all bytes
 
@@ -5135,16 +5141,17 @@ class Prefixed(Subconstruct):
         [1684234849, 1751606885]
     """
 
-    def __init__(self, lengthfield, subcon, includelength=False):
+    def __init__(self, lengthfield, subcon, includelength=False, absolute=False):
         super().__init__(subcon)
         self.lengthfield = lengthfield
         self.includelength = includelength
+        self.absolute = absolute
 
     def _parse(self, stream, context, path):
         length = self.lengthfield._parsereport(stream, context, path)
         if self.includelength:
             length -= self.lengthfield._sizeof(context, path)
-        substream = BytesIOWithOffsets.from_reading(stream, length, path)
+        substream = BytesIOWithOffsets.from_reading(stream, length, path) if self.absolute else io.BytesIO(stream_read(stream, length, path))
         return self.subcon._parsereport(substream, context, path)
 
     def _build(self, obj, stream, context, path):
@@ -5240,6 +5247,7 @@ class FixedSized(Subconstruct):
 
     :param length: integer or context lambda, total amount of bytes (both data and padding)
     :param subcon: Construct instance
+    :param absolute: Seek relative to the start of the stream rather than relative to the last occurence of a subconstruct
 
     :raises StreamError: requested reading negative amount, could not read enough bytes, requested writing different amount than actual data, or could not write all bytes
     :raises PaddingError: length is negative
@@ -5258,15 +5266,16 @@ class FixedSized(Subconstruct):
         10
     """
 
-    def __init__(self, length, subcon):
+    def __init__(self, length, subcon, absolute=False):
         super().__init__(subcon)
         self.length = length
+        self.absolute = absolute
 
     def _parse(self, stream, context, path):
         length = evaluate(self.length, context)
         if length < 0:
             raise PaddingError("length cannot be negative", path=path)
-        substream = BytesIOWithOffsets.from_reading(stream, length, path)
+        substream = BytesIOWithOffsets.from_reading(stream, length, path) if self.absolute else io.BytesIO(stream_read(stream, length, path))
         return self.subcon._parsereport(substream, context, path)
 
     def _build(self, obj, stream, context, path):
@@ -5309,6 +5318,7 @@ class NullTerminated(Subconstruct):
     :param include: optional, bool, if to include terminator in resulting data, default is False
     :param consume: optional, bool, if to consume terminator or leave it in the stream, default is True
     :param require: optional, bool, if EOF results in failure or not, default is True
+    :param absolute: Seek relative to the start of the stream rather than relative to the last occurence of a subconstruct
 
     :raises StreamError: requested reading negative amount, could not read enough bytes, requested writing different amount than actual data, or could not write all bytes
     :raises StreamError: encountered EOF but require is not disabled
@@ -5323,12 +5333,13 @@ class NullTerminated(Subconstruct):
         b'\xff\x00'
     """
 
-    def __init__(self, subcon, term=b"\x00", include=False, consume=True, require=True):
+    def __init__(self, subcon, term=b"\x00", include=False, consume=True, require=True, absolute=False):
         super().__init__(subcon)
         self.term = term
         self.include = include
         self.consume = consume
         self.require = require
+        self.absolute = absolute
 
     def _parse(self, stream, context, path):
         term = self.term
@@ -5352,7 +5363,8 @@ class NullTerminated(Subconstruct):
                     stream_seek(stream, -unit, 1, path)
                 break
             data += b
-        substream = BytesIOWithOffsets(data, stream, offset)
+
+        substream = BytesIOWithOffsets(data, stream, offset) if self.absolute else io.BytesIO(data)
         return self.subcon._parsereport(substream, context, path)
 
     def _build(self, obj, stream, context, path):
@@ -5379,6 +5391,7 @@ class NullStripped(Subconstruct):
 
     :param subcon: Construct instance
     :param pad: optional, bytes, padding byte-string, default is \x00 single null byte
+    :param absolute: Seek relative to the start of the stream rather than relative to the last occurence of a subconstruct
 
     :raises PaddingError: pad is less than 1 bytes in length
 
@@ -5391,9 +5404,10 @@ class NullStripped(Subconstruct):
         b'\xff'
     """
 
-    def __init__(self, subcon, pad=b"\x00"):
+    def __init__(self, subcon, pad=b"\x00", absolute=False):
         super().__init__(subcon)
         self.pad = pad
+        self.absolute = absolute
 
     def _parse(self, stream, context, path):
         pad = self.pad
@@ -5412,7 +5426,8 @@ class NullStripped(Subconstruct):
             while end-unit >= 0 and data[end-unit:end] == pad:
                 end -= unit
             data = data[:end]
-        substream = BytesIOWithOffsets(data, stream, offset)
+
+        substream = BytesIOWithOffsets(data, stream, offset) if self.absolute else io.BytesIO(data)
         return self.subcon._parsereport(substream, context, path)
 
     def _build(self, obj, stream, context, path):
@@ -5613,6 +5628,7 @@ class ProcessXor(Subconstruct):
 
     :param padfunc: integer or bytes or context lambda, single or multiple bytes to xor data with
     :param subcon: Construct instance
+    :param absolute: Seek relative to the start of the stream rather than relative to the last occurence of a subconstruct
 
     :raises StringError: pad is not integer or bytes
 
@@ -5627,9 +5643,10 @@ class ProcessXor(Subconstruct):
         2
     """
 
-    def __init__(self, padfunc, subcon):
+    def __init__(self, padfunc, subcon, absolute=False):
         super().__init__(subcon)
         self.padfunc = padfunc
+        self.absolute = absolute
 
     def _parse(self, stream, context, path):
         pad = evaluate(self.padfunc, context)
@@ -5645,7 +5662,8 @@ class ProcessXor(Subconstruct):
         if isinstance(pad, bytes):
             if not (len(pad) <= 64 and pad == bytes(len(pad))):
                 data = bytes((b ^ p) for b,p in zip(data, itertools.cycle(pad)))
-        substream = BytesIOWithOffsets(data, stream, offset)
+
+        substream = BytesIOWithOffsets(data, stream, offset) if self.absolute else io.BytesIO(data)
         return self.subcon._parsereport(substream, context, path)
 
     def _build(self, obj, stream, context, path):
