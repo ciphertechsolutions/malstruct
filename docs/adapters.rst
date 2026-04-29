@@ -119,4 +119,3 @@ For example, if 7 out of 8 bits are not allowed to be set (like a flag boolean):
     >>> d.build(88)
     ValidationError: Error in path (building)
     object failed validation: 88
-

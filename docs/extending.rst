@@ -45,13 +45,13 @@ Deriving directly from class ``Construct``, raw constructs can do as they wish b
             # read from the stream
             # return object
             pass
-        
+
         def _build(self, obj, stream, context, path):
             # write obj to the stream
             # return same value (obj) or a modified value
             # that will replace the context dictionary entry
             pass
-        
+
         def _sizeof(self, context, path):
             # return computed size (when fixed size or depends on context)
             # or raise SizeofError (when variable size or unknown)
@@ -75,7 +75,7 @@ Deriving from class ``Subconstruct``, these wrap an inner construct, inheriting 
             obj = self.subcon._parse(stream, context, path)
             # do something with obj
             return obj
-        
+
         def _build(self, obj, stream, context, path):
             # do something with obj
             return self.subcon._build(obj, stream, context, path)

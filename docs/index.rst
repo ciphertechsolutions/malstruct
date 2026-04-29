@@ -59,7 +59,6 @@ User Guide
    adapters
    extending
    debugging
-   compilation
 
 API Reference
 =============
@@ -67,26 +66,9 @@ API Reference
 .. toctree::
    :maxdepth: 2
 
-   api/abstract
-   api/exceptions
-   api/bytes
-   api/numerics
-   api/strings
-   api/mappings
-   api/structs
-   api/repeaters
-   api/special
-   api/misc
-   api/conditional
-   api/align
-   api/streaming
-   api/tunneling
-   api/lazy
-   api/debugging
-   api/adapters
+   api/modules
+   api/pecon
 
-   api/core
-   api/lib
 
 Indices and tables
 ==================

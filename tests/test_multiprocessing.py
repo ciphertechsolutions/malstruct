@@ -1,10 +1,10 @@
-from tests.declarativeunittest import *
-from malstruct import *
 from malstruct.lib import *
+
 
 def worker(q):
     obj = q.get()
     print(obj)
+
 
 def test_multiprocessing():
     import multiprocessing

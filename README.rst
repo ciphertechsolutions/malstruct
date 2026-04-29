@@ -1,4 +1,4 @@
-Malstruct 2.10
+Malstruct
 ===================
 
 Malstruct is a powerful **declarative** and **symmetrical** parser and builder for binary data that was forked from `construct <https://github.com/construct/construct>`_ as of release 2.10.70.
@@ -42,3 +42,6 @@ A ``Sequence`` is a collection of ordered fields, and differs from ``Array`` and
     b'\nlalaland\xff\x01\x02'
     >>> format.parse(b"\x004361789432197")
     ['', [52, 51, 54, 49, 55, 56, 57, 52, 51, 50, 49, 57, 55]]
+
+
+Included in malstruct is the `pecon` (PE file reconstruction utility) package. Please see the `pecon API documentation <https://malstruct.readthedocs.io/en/latest/api/pecon.html>`_ for more information.
