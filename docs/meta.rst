@@ -182,7 +182,7 @@ Using ``list_`` expression
 
 There is also a third expression that takes ``(obj, list, context)`` and computes on the second parameter (the list). In constructs that use lambdas with all 3 parameters, those constructs usually process lists of elements and the 2nd parameter is a list of elements processed so far.
 
-These can be used in at least one construct: 
+These can be used in at least one construct:
 
 >>> RepeatUntil(list_[-1] == 0, Byte).parse(b"aioweqnjkscs\x00")
 [97, 105, 111, 119, 101, 113, 110, 106, 107, 115, 99, 115, 0]
@@ -218,5 +218,3 @@ Sizeof method does not work in this expressions. Use a lambda:
 >>> lambda this: this._subcons.<member>.sizeof()
 
 Lambdas (unlike this expressions) are not compilable.
-
-

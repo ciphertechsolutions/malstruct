@@ -52,7 +52,63 @@ Malstruct has been used to parse:
 * Executable binaries formats like ELF32, PE32
 * Filesystem layouts like Ext2, Fat16, MBR
 
-See more examples in `current gallery <https://github.com/ciphertechsolutions/malstruct/tree/master/gallery>`_ and in `deprecated gallery <https://github.com/ciphertechsolutions/malstruct/tree/master/deprecated_gallery>`_.
+
+Malware Analysis
+----------------
+
+Helpers and utilities have been added to Malstruct to aid in malware analysis and configuration parser development, from simple `windows structure extensions <https://github.com/ciphertechsolutions/malstruct/tree/master/src/malstruct/windows/structures.py>`_ to constructs/adapters to aid in processing binary file types (e.g. PE, ELF, and Mach-O).
+
+For example, when attempting to extract a referenced string from a 64-bit PE file the following can assist::
+
+    >>> spec = FocusLast(
+        "re" / RegexSearch(
+            re.compile(
+                # test64.exe @ 0x14000101d
+                br"""
+                    \x45\x33\xc9                    # xor     r9d, r9d; lpNumberOfCharsWritten
+                    \x41\xb8(?P<size>.{4})          # mov     r8d, 0Eh; nNumberOfCharsToWrite
+                    \x48\x8d\x15(?P<ro>.{4})(?P<e>) # lea     rdx, aHelloWorld; "Hello, World!\n"
+                    \x48\x8b\x4c\x24.               # mov     rcx, [rsp+48h+hConsoleOutput]; hConsoleOutput
+                    \xff\x15.{4}                    # call    cs:WriteConsoleA
+                    \x33\xc9                        # xor     ecx, ecx; uExitCode
+                """,
+                re.DOTALL | re.VERBOSE
+            ),
+            size=Int32ul,
+            ro=Int32ul,
+            e=Tell
+        ),
+        PEPointer64(this.re.ro, this.re.e, String(this.re.size))
+    )
+    >>> spec.parse(data, pe=pe)
+    'Hello, World!\n'
+
+
+Alternatively to using `PEPointer64`, users can leverage the `PEMemoryAddress` adapter to perform the internal memory conversion calculation as follows::
+
+    >>> spec = FocusLast(
+        "re" / RegexSearch(
+            re.compile(
+                # test64.exe @ 0x14000101d
+                br"""
+                    \x45\x33\xc9                    # xor     r9d, r9d; lpNumberOfCharsWritten
+                    \x41\xb8(?P<size>.{4})          # mov     r8d, 0Eh; nNumberOfCharsToWrite
+                    \x48\x8d\x15(?P<ro>.{4})(?P<e>) # lea     rdx, aHelloWorld; "Hello, World!\n"
+                    \x48\x8b\x4c\x24.               # mov     rcx, [rsp+48h+hConsoleOutput]; hConsoleOutput
+                    \xff\x15.{4}                    # call    cs:WriteConsoleA
+                    \x33\xc9                        # xor     ecx, ecx; uExitCode
+                """,
+                re.DOTALL | re.VERBOSE
+            ),
+            size=Int32ul,
+            ro=Int32ul,
+            e=PEMemoryAddress(Tell)
+        ),
+        PEPointer(this.re.ro + this.re.e, String(this.re.size))
+    )
+    >>> spec.parse(data, pe=pe)
+    'Hello, World!\n'
+
 
 
 Development and support
@@ -66,38 +122,20 @@ Requirements
 --------------
 Malstruct should run on CPython 3.10 3.11 3.12 3.13, 3.14 (and probably beta) and PyPy implementations. PyPy achieves much better performance.
 
-Following modules are needed only if you want to use certain features:
+Following modules are needed for associated features:
 
-* Numpy is optional, if you want to serialize arrays using Numpy protocol. Otherwise arrays can still be serialized using PrefixedArray.
-* Arrow is optional, if you want to use Timestamp class.
+* Numpy is used for serialization of arrays using Numpy protocol. Otherwise arrays can still be serialized using PrefixedArray.
+* Arrow is used for the Timestamp class.
 * Different Python versions support different compression modules (like gzip lzma), if you want to use Compressed class.
-* Ruamel.yaml is optional, if you want to use KaitaiStruct (KSY) exporter.
-* Cloudpickle is optional, if you want to serialize the classes.
-* LZ4 is optional, if you want to use CompressedLZ4 class.
-* Cryptography is optional, if you want to use Encrypted* classes.
+* Cloudpickle is used for class serialization.
+* LZ4 is used for the CompressedLZ4 class.
+* Cryptography is used for Encrypted* classes.
+* pyelftools, pefile, and lief are used for binary file analysis of ELF, PE, and Mach-O binary files
 
 
 Installing
 -------------
 
-The library is downloadable and installable from Pypi. Just use standard command-line. There are no hard dependencies, but if you would like to install all supported (not required) modules listed above, you can use the 2nd command-line form.
+The library is downloadable and installable from Pypi. Just use standard command-line.
 
 * ``pip install malstruct``
-* ``pip install malstruct[extras]``
-
-
-Type Hints / Type Annotations
----------------------------------
-
-As an extension to this library there is the `construct-typing <https://pypi.org/project/construct-typing/>`_ library, which provides PEP 561 compliant stub files for this library. It also provides extended adapters to describe complex structures using PEP 526 type annotations for improved static code analysis with mypy.
-
-* ``pip install construct-typing``
-
-
-Visual Editor
------------------
-
-Another fancy extension to this library is the `construct-editor <https://pypi.org/project/construct-editor/>`_ visual editor for binary blobs that uses Construct parsing classes internally.
-
-* ``pip install construct-editor``
-* ``construct-editor``

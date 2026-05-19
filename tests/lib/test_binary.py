@@ -1,8 +1,17 @@
-from tests.declarativeunittest import *
-from malstruct.lib.binary import *
+from malstruct.lib.binary import (
+    bits2bytes,
+    bits2integer,
+    bytes2bits,
+    bytes2integer,
+    integer2bits,
+    integer2bytes,
+    swapbitsinbytes,
+    swapbytes,
+    swapbytesinbits,
+)
 
 
-def test_integer2bits():
+def test_integer2bits(raises):
     assert raises(integer2bits, 0, 0, False) == ValueError
     assert raises(integer2bits, 0, 0, True) == ValueError
     assert integer2bits(19, 5) == b"\x01\x00\x00\x01\x01"
@@ -11,69 +20,88 @@ def test_integer2bits():
     assert integer2bits(-13, 8, True) == b"\x01\x01\x01\x01\x00\x00\x01\x01"
     assert raises(integer2bits, 0, -1) == ValueError
     assert raises(integer2bits, -1, 8, False) == ValueError
-    assert raises(integer2bits, -2**64, 8, True) == ValueError
-    assert raises(integer2bits,  2**64, 8, True) == ValueError
-    assert raises(integer2bits, -2**64, 8, False) == ValueError
-    assert raises(integer2bits,  2**64, 8, False) == ValueError
+    assert raises(integer2bits, -(2**64), 8, True) == ValueError
+    assert raises(integer2bits, 2**64, 8, True) == ValueError
+    assert raises(integer2bits, -(2**64), 8, False) == ValueError
+    assert raises(integer2bits, 2**64, 8, False) == ValueError
 
-def test_integer2bytes():
+
+def test_integer2bytes(raises):
     assert raises(integer2bytes, 0, 0, False) == ValueError
     assert raises(integer2bytes, 0, 0, True) == ValueError
     assert integer2bytes(0, 4) == b"\x00\x00\x00\x00"
     assert integer2bytes(1, 4) == b"\x00\x00\x00\x01"
-    assert integer2bytes(19, 4) == b'\x00\x00\x00\x13'
+    assert integer2bytes(19, 4) == b"\x00\x00\x00\x13"
     assert integer2bytes(255, 1) == b"\xff"
     assert integer2bytes(255, 4) == b"\x00\x00\x00\xff"
     assert integer2bytes(-1, 4, True) == b"\xff\xff\xff\xff"
     assert integer2bytes(-255, 4, True) == b"\xff\xff\xff\x01"
     assert raises(integer2bytes, 0, -1) == ValueError
     assert raises(integer2bytes, -1, 8, False) == ValueError
-    assert raises(integer2bytes, -2**64, 4, True) == ValueError
-    assert raises(integer2bytes,  2**64, 4, True) == ValueError
-    assert raises(integer2bytes, -2**64, 4, False) == ValueError
-    assert raises(integer2bytes,  2**64, 4, False) == ValueError
+    assert raises(integer2bytes, -(2**64), 4, True) == ValueError
+    assert raises(integer2bytes, 2**64, 4, True) == ValueError
+    assert raises(integer2bytes, -(2**64), 4, False) == ValueError
+    assert raises(integer2bytes, 2**64, 4, False) == ValueError
 
-def test_bits2integer():
+
+def test_bits2integer(raises):
     assert raises(bits2integer, b"", False) == ValueError
     assert raises(bits2integer, b"", True) == ValueError
     assert bits2integer(b"\x01\x00\x00\x01\x01", False) == 19
     assert bits2integer(b"\x01\x00\x00\x01\x01", True) == -13
 
-def test_bytes2integer():
+
+def test_bytes2integer(raises):
     assert raises(bytes2integer, b"", False) == ValueError
     assert raises(bytes2integer, b"", True) == ValueError
     assert bytes2integer(b"\x00") == 0
     assert bytes2integer(b"\x00", True) == 0
     assert bytes2integer(b"\xff") == 255
     assert bytes2integer(b"\xff", True) == -1
-    assert bytes2integer(b'\x00\x00\x00\x13', False) == 19
-    assert bytes2integer(b'\x00\x00\x00\x13', True) == 19
+    assert bytes2integer(b"\x00\x00\x00\x13", False) == 19
+    assert bytes2integer(b"\x00\x00\x00\x13", True) == 19
+
 
 def test_cross_integers():
-    for i in [-300,-255,-100,-1,0,1,100,255,300]:
-        assert bits2integer(integer2bits(i,64,signed=(i<0)),signed=(i<0)) == i
-        assert bytes2integer(integer2bytes(i,8,signed=(i<0)),signed=(i<0)) == i
-        assert bits2bytes(integer2bits(i,64,signed=(i<0))) == integer2bytes(i,8,signed=(i<0))
-        assert bytes2bits(integer2bytes(i,8,signed=(i<0))) == integer2bits(i,64,signed=(i<0))
+    for i in [-300, -255, -100, -1, 0, 1, 100, 255, 300]:
+        assert bits2integer(integer2bits(i, 64, signed=(i < 0)), signed=(i < 0)) == i
+        assert bytes2integer(integer2bytes(i, 8, signed=(i < 0)), signed=(i < 0)) == i
+        assert bits2bytes(integer2bits(i, 64, signed=(i < 0))) == integer2bytes(
+            i, 8, signed=(i < 0)
+        )
+        assert bytes2bits(integer2bytes(i, 8, signed=(i < 0))) == integer2bits(
+            i, 64, signed=(i < 0)
+        )
+
 
 def test_bytes2bits():
     assert bytes2bits(b"") == b""
-    assert bytes2bits(b"ab") == b"\x00\x01\x01\x00\x00\x00\x00\x01\x00\x01\x01\x00\x00\x00\x01\x00"
+    assert (
+        bytes2bits(b"ab")
+        == b"\x00\x01\x01\x00\x00\x00\x00\x01\x00\x01\x01\x00\x00\x00\x01\x00"
+    )
 
-def test_bits2bytes():
+
+def test_bits2bytes(raises):
     assert bits2bytes(b"") == b""
-    assert bits2bytes(b"\x00\x01\x01\x00\x00\x00\x00\x01\x00\x01\x01\x00\x00\x00\x01\x00") == b"ab"
+    assert (
+        bits2bytes(b"\x00\x01\x01\x00\x00\x00\x00\x01\x00\x01\x01\x00\x00\x00\x01\x00")
+        == b"ab"
+    )
     assert raises(bits2bytes, b"\x00") == ValueError
     assert raises(bits2bytes, b"\x00\x00\x00\x00\x00\x00\x00") == ValueError
+
 
 def test_swapbytes():
     assert swapbytes(b"") == b""
     assert swapbytes(b"abcd") == b"dcba"
 
-def test_swapbytesinbits():
+
+def test_swapbytesinbits(raises):
     assert swapbytesinbits(b"") == b""
     assert swapbytesinbits(b"0000000011111111") == b"1111111100000000"
     assert raises(swapbytesinbits, b"1") == ValueError
+
 
 def test_swapbitsinbytes():
     assert swapbitsinbytes(b"") == b""
