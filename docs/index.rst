@@ -26,12 +26,6 @@ Malstruct
     <strong>Sticky</strong><br/>
     <br/>
 
-    <a class="reference external" href="https://github.com/ciphertechsolutions/malstruct/releases">Version 2.10</a> was released in January 2020. It removes major neckpains (Embedded and EmbeddedSwitch). See Transition page.<br/>
-    <br/>
-
-    Happy to announce collaboration with <a class="reference external" href="http://kaitai.io/">Kaitai Struct</a>, a multi-platform binary parser. <br/>
-    <br/>
-
     Please use <a class="reference external" href="https://github.com/ciphertechsolutions/malstruct/issues">GitHub Issues</a> to ask general questions, make feature requests (and vote for them), report issues and bugs, and to submit PRs. Feel free to request any changes that would support your project.<br/>
     <br/>
 
@@ -59,7 +53,6 @@ User Guide
    adapters
    extending
    debugging
-   compilation
 
 API Reference
 =============
@@ -67,26 +60,9 @@ API Reference
 .. toctree::
    :maxdepth: 2
 
-   api/abstract
-   api/exceptions
-   api/bytes
-   api/numerics
-   api/strings
-   api/mappings
-   api/structs
-   api/repeaters
-   api/special
-   api/misc
-   api/conditional
-   api/align
-   api/streaming
-   api/tunneling
-   api/lazy
-   api/debugging
-   api/adapters
+   api/modules
+   api/pecon
 
-   api/core
-   api/lib
 
 Indices and tables
 ==================

@@ -2,9 +2,42 @@ Changelog
 =========
 
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_\ ,
+and this project adheres to `Calendar Versioning <https://calver.org/>`_ with the schema MAJOR.MINOR.YYYY0M0D.
+
+
+3.0.20260518 - 2026-05-18
+-------------------------
+
+Added
+^^^^^
+- Alias `VarIntl` to `VarInt`
+- Add `VarIntb` for big-endian parsing
+- `PEImport`, `PEImportPointer`, and `PEImportSymbol` to process imported APIs from memory address references in PE files
+
+
+3.0.20260429 - 2026-04-29
+-------------------------
+
+Changed
+^^^^^^^
+- Split out `core` functionality across `adapters`, `alignment`, `analysis`, `bytes_`, `conditional`, `exceptions`, `expr`, `helpers`, `integers`, `lazy`, `mappings`, `miscellaneous`, `stream`, `strings`, and `transforms`
+- Moved binary file analysis to `malstruct.binaryfiles`
+- Moved remaining `malstruct.utils` functionality to base level
+- Added `pecon` utility as an installed package
+- Move from "flat" layout to "src" layout
+- Use `pyproject.toml` configuration file for packaging
+
+Removed
+^^^^^^^
+- Removed usage of `__all__` in init
+- Removed usage of compilation feature and benchmarks
+- Removed `py3compat` functionality
+- Removed `pefileutils` and `elffileutils`
+- Removed functionality from `machoutils` unrelated to malstructs/adapters
+
 
 2.10.71
-------
+-------
 
 Changed
 ^^^^^^^

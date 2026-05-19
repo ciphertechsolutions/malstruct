@@ -1,5 +1,3 @@
-from tests.declarativeunittest import *
-from malstruct import *
 from malstruct.lib import *
 
 
@@ -10,7 +8,10 @@ def test_str():
 
     l = ListContainer(range(5))
     print(repr(str(l)))
-    print(repr((l)))
+    print(repr(l))
     l.append(l)
-    assert str(l) == "ListContainer: \n    0\n    1\n    2\n    3\n    4\n    <recursion detected>"
+    assert (
+        str(l)
+        == "ListContainer: \n    0\n    1\n    2\n    3\n    4\n    <recursion detected>"
+    )
     assert repr(l) == "ListContainer([0, 1, 2, 3, 4, <recursion detected>])"

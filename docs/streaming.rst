@@ -74,4 +74,3 @@ None
 >>> Terminated.parse(b"remaining")
 TerminatedError: Error in path (parsing)
 expected end of stream
-

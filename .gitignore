@@ -20,3 +20,11 @@ venv*/
 # IDE Settings
 .idea/
 .vscode/
+
+# OS Artifacts
+.DS_Store
+
+# Test Artifacts
+.coverage
+coverage.xml
+junit.xml
